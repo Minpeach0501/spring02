@@ -233,7 +233,6 @@ function postComment(id) {
     longinCheck();
     let comment = $(`#${id}-comment`).val();
     let data = {'comment': comment};
-
     $.ajax({
         type: "POST",
         url: `/api/comment/${id}`,
@@ -241,7 +240,13 @@ function postComment(id) {
         data: JSON.stringify(data),
         success: function (response) {
             alert(response)
-            window.location.reload()
+            getComment(id)
+            $("#modal-comment").removeClass("is-active")
+            let el = document.getElementsByClassName('input');
+            for(let i=0; i<el.length; i++) {
+                el[i].value = '';
+            }
+
         }
     })
 }
