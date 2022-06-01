@@ -28,13 +28,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTAuthProvider jwtAuthProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
+    private final UserLoginFailer userLoginFailer;
 
     public WebSecurityConfig(
             JWTAuthProvider jwtAuthProvider,
-            HeaderTokenExtractor headerTokenExtractor
+            HeaderTokenExtractor headerTokenExtractor,
+            UserLoginFailer userLoginFailer
     ) {
         this.jwtAuthProvider = jwtAuthProvider;
         this.headerTokenExtractor = headerTokenExtractor;
+        this.userLoginFailer = userLoginFailer;
     }
 
     @Bean
@@ -98,6 +101,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter formLoginFilter = new FormLoginFilter(authenticationManager());
         formLoginFilter.setFilterProcessesUrl("/user/login");
+        formLoginFilter.setAuthenticationFailureHandler(userLoginFailer);
         formLoginFilter.setAuthenticationSuccessHandler(formLoginSuccessHandler());
         formLoginFilter.afterPropertiesSet();
         return formLoginFilter;

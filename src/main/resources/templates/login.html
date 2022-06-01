@@ -63,6 +63,7 @@
           });
           window.location.href = '/';
         } else {
+          if (!!response.message.length) { alert(response.message); }
           window.location.href = '/user/loginView?error';
         }
       }
